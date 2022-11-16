@@ -1,5 +1,5 @@
 <template>
-<div class="screen-container">
+<div class="w-full h-screen bs-bg">
   <router-view></router-view>
 </div>
 </template>
@@ -14,10 +14,7 @@ sickStore.getSickRankList()
 </script>
 
 <style scoped lang='less'>
-.screen-container {
-  width: 100vw;
-  height: 100vh;
-  background-color: #020309;
-  // color: #fff;
+.bs-bg {
+  background-color: #020308;
 }
 </style>

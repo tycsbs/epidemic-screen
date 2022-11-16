@@ -257,3 +257,11 @@ export interface RankListItem {
 	healCompare: number;
 	deadCompare: number;
 }
+
+export interface ProviceTableMo {
+	name: string;
+	total: number;
+	nowConfirm: number;
+	heal: number;
+	dead: number;
+}

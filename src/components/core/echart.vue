@@ -1,13 +1,12 @@
 <template>
-    <div ref="chartRef" :id="id">
-        
-    </div>
+    <div ref="chartRef" :id="id" class="h-auto w-full"></div>
 </template>
+
 <script setup lang='ts'>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import * as echarts from 'echarts'
 import type { EChartsType, EChartsOption } from 'echarts'
-import geoJson from '@/assets/china.json'
+import geoJson from '@/assets/full.json'
 
 const props = defineProps({
     /**
@@ -47,18 +46,24 @@ const props = defineProps({
     /**
      * 需要加载的地图区域名称
      */
-    mapName: String
+    mapName: {
+        type: String,
+        default: 'china'
+    }
 
 })
 
-const chartRef = ref()
+const chartRef = ref<HTMLElement>()
 const chartInstanceRef = ref<EChartsType>()
 
 onMounted(() => {
-    chartInstanceRef.value = echarts.init(chartRef.value, {})
+    chartInstanceRef.value = echarts.init(chartRef.value!, {})
     props.mapName && echarts.registerMap(props.mapName, geoJson as any)
     initChart()
 
+    chartInstanceRef.value?.on('click', (param) => {
+        console.log(param)
+    })
 })
 
 watch(() => props.options, (opt) => {
@@ -78,7 +83,4 @@ defineExpose({
 </script>
 
 <style lang='less' scoped>
-.container {
-    
-}
 </style>

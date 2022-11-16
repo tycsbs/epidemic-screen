@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type { SickDataMo, RankListItem } from '@/interface'
+import type { SickDataMo, RankListItem, ProviceTableMo } from '@/interface'
 import { getSickData, getSickRankList } from '@/api/'
 
 export const useSickStore = defineStore({
@@ -7,16 +7,51 @@ export const useSickStore = defineStore({
     state: () => ({
         list: <SickDataMo>{},
         rankList: <RankListItem[]>[]
+
+        // proviceList: <ProviceTableMo[]>[]
     }),
+    getters: {
+        proviceList: (state) => {
+            const originData = state.list.diseaseh5Shelf?.areaTree[0]?.children
+            const proviceData: ProviceTableMo[] = originData.map((item) => {
+                return {
+                    name: item.name,
+                    total: item.total.confirm,
+                    nowConfirm: item.total.nowConfirm,
+                    heal: item.total.heal,
+                    dead: item.total.dead
+                }
+            })
+            return proviceData
+        }
+    },
     actions: {
         async getList() {
             const data = await getSickData() as SickDataMo
             this.list = data
+            // this.proviceList = this.getProviceList()
         },
 
         async getSickRankList() {
             const data = await getSickRankList() as RankListItem[]
             this.rankList = data
+        },
+
+        /**
+         * 获取各省份数据统计 -- 总计
+         */
+        getProviceList(): ProviceTableMo[] {
+            const originData = this.list.diseaseh5Shelf?.areaTree[0]?.children
+            const proviceData = originData.map((item) => {
+                return {
+                    name: item.name,
+                    total: item.total.confirm,
+                    nowConfirm: item.total.nowConfirm,
+                    heal: item.total.heal,
+                    dead: item.total.dead
+                }
+            })
+            return proviceData
         }
     }
 })

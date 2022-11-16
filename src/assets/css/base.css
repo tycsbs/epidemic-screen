@@ -1,18 +1,7 @@
-.flex-l {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  .flex-c {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .flex-r {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+div {
+  box-sizing: border-box;
+}
