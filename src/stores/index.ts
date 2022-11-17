@@ -11,9 +11,13 @@ export const useSickStore = defineStore({
         // proviceList: <ProviceTableMo[]>[]
     }),
     getters: {
+        /**
+         * 获取各省统计情况
+         * @returns {ProviceTableMo[]}
+         */
         proviceList: (state) => {
-            const originData = state.list.diseaseh5Shelf?.areaTree[0]?.children
-            const proviceData: ProviceTableMo[] = originData.map((item) => {
+            const originData = state.list?.diseaseh5Shelf?.areaTree[0]?.children
+            const proviceData: ProviceTableMo[] = originData?.map((item) => {
                 return {
                     name: item.name,
                     total: item.total.confirm,
@@ -29,29 +33,11 @@ export const useSickStore = defineStore({
         async getList() {
             const data = await getSickData() as SickDataMo
             this.list = data
-            // this.proviceList = this.getProviceList()
         },
 
         async getSickRankList() {
             const data = await getSickRankList() as RankListItem[]
             this.rankList = data
-        },
-
-        /**
-         * 获取各省份数据统计 -- 总计
-         */
-        getProviceList(): ProviceTableMo[] {
-            const originData = this.list.diseaseh5Shelf?.areaTree[0]?.children
-            const proviceData = originData.map((item) => {
-                return {
-                    name: item.name,
-                    total: item.total.confirm,
-                    nowConfirm: item.total.nowConfirm,
-                    heal: item.total.heal,
-                    dead: item.total.dead
-                }
-            })
-            return proviceData
         }
     }
 })

@@ -1,5 +1,5 @@
 <template>
-    <div ref="chartRef" :id="id" class="h-auto w-full"></div>
+    <div ref="chartRef" :id="id" class="h-full w-full"></div>
 </template>
 
 <script setup lang='ts'>
@@ -8,6 +8,7 @@ import * as echarts from 'echarts'
 import type { EChartsType, EChartsOption } from 'echarts'
 import geoJson from '@/assets/full.json'
 
+name: 'BaseChart'
 const props = defineProps({
     /**
      * id: 容器ID, 唯一值
@@ -18,16 +19,16 @@ const props = defineProps({
      * 容器宽度
      */
     width: {
-        type: String,
-        required: true
+        type: String
+        // required: true
     },
 
     /**
      * 容器高度
      */
     height: {
-        type: String,
-        required: true
+        type: String
+        // required: true
     },
 
     /**
@@ -67,6 +68,7 @@ onMounted(() => {
 })
 
 watch(() => props.options, (opt) => {
+    console.log(opt, '====>')
     opt && initChart(opt)
 }, {
     deep: true
@@ -78,7 +80,8 @@ const initChart = (data?: EChartsOption) => {
 }
 
 defineExpose({
-    initChart
+    initChart,
+    chartInstanceRef
 })
 </script>
 

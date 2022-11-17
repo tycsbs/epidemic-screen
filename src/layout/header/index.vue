@@ -1,7 +1,7 @@
 <template>
-    <el-row>
+    <!-- <el-row> -->
         <BHeader></BHeader>
-    </el-row>
+    <!-- </el-row> -->
 </template>
     
 <script setup lang='ts'>
