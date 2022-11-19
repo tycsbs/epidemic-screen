@@ -9,6 +9,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { useResizeObserver } from '@vueuse/core'
 import type { Points, BufferGeometry, PointsMaterial } from 'three';
+import gsap from 'gsap'
 
 const props = defineProps({
     /**
@@ -49,7 +50,7 @@ const initView = () => {
     scence = new THREE.Scene()
     scence.background = loadBackground()
     camera = new THREE.PerspectiveCamera(45, winOpt.width / winOpt.height, 0.1, 100)
-    camera.position.set(5, 5, 30)
+    camera.position.set(5, 5, 2)
 
     renderer = new THREE.WebGLRenderer({
         antialias: true
@@ -57,16 +58,16 @@ const initView = () => {
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setSize(winOpt.width, winOpt.height)
 
-    const geometry = new THREE.BoxGeometry(1,1,1)
-    const material = new THREE.MeshBasicMaterial({
-        color: 0x00ffff,
-        opacity: 0.5
-    })
-    const cube = new THREE.Mesh(geometry, material)
+    // const geometry = new THREE.BoxGeometry(1,1,1)
+    // const material = new THREE.MeshBasicMaterial({
+    //     color: 0x00ffff,
+    //     opacity: 0.5
+    // })
+    // const cube = new THREE.Mesh(geometry, material)
 
     control = new OrbitControls(camera, renderer.domElement)
 
-    scence.add(cube)
+    // scence.add(cube)
 
     canvasRef.value.appendChild(renderer.domElement)
 
@@ -80,18 +81,25 @@ const loadPoints = () => {
     const verties = []
     for (let index = 0; index < 30000; index++) {
         const points = THREE.MathUtils.randFloat(-4, 4)
+        // geometry.tween.push(gsap.to({points}, {
+        //     duration: 6,
+        //     yoyo: true,
+        //     repeat: -1,
+        //     ease: 'power1.inOut'
+        // }))
         verties.push(points)
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verties), 3))
 
     pointsList = new THREE.Points(geometry, new THREE.PointsMaterial({
-        color: Math.random() * 0xffffff,
+        map: new THREE.TextureLoader().load('/public/snow.png'),
         opacity: 0.3,
         transparent: true,
-        alphaTest: 0.1,
-        size: 0.3
-    })) 
+        alphaTest: 0.05,
+        depthTest: true,
+        size: 0.05
+    }))
 
     scence.add(pointsList)
 }
@@ -107,7 +115,26 @@ useResizeObserver(body, (entry) => {
         camera.aspect = width / height
         camera.updateProjectionMatrix()
 
-        pointsList.rotation.x += 0.001
+        pointsList.rotation.z += 0.005
+        pointsList.position.y += 0.001
+
+        if (pointsList.position.z > 4) {
+            pointsList.position.z = 0
+        }
+        gsap.to(pointsList.position, {
+            y: 3,
+            duration: 30,
+            yoyo: true,
+            repeat: -1,
+            ease: 'power1'
+        })
+        gsap.to(pointsList.rotation, {
+            z: Math.PI / 3,
+            duration: 60,
+            yoyo: true,
+            repeat: -1,
+            ease: 'power1'
+        })
     })
 })
 

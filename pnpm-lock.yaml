@@ -23,6 +23,7 @@ specifiers:
   postcss: ^8.4.19
   tailwindcss: ^3.2.4
   three: ^0.146.0
+  three-tween: ^1.0.0
   typescript: ~4.7.4
   unocss: ^0.45.29
   vite: ^3.0.9
@@ -43,6 +44,7 @@ dependencies:
   moment: 2.29.4
   pinia: 2.0.23_typescript@4.7.4+vue@3.2.45
   three: 0.146.0
+  three-tween: 1.0.0_three@0.146.0
   unocss: 0.45.30_vite@3.2.3
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
@@ -2649,6 +2651,14 @@ packages:
     transitivePeerDependencies:
       - ts-node
     dev: true
+
+  /three-tween/1.0.0_three@0.146.0:
+    resolution: {integrity: sha512-JoRS/llDmrpZq7quzuk/Y9lDDW2ziW9eulMQDMi+Qfy5GcWhnnRYcoNcPFw/VPm4xptehcWDSNNBBdweX6ZIWw==}
+    peerDependencies:
+      three: '>= 0.91'
+    dependencies:
+      three: 0.146.0
+    dev: false
 
   /three/0.146.0:
     resolution: {integrity: sha512-1lvNfLezN6OJ9NaFAhfX4sm5e9YCzHtaRgZ1+B4C+Hv6TibRMsuBAM5/wVKzxjpYIlMymvgsHEFrrigEfXnb2A==}
