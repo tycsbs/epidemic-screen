@@ -9,7 +9,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { useSickStore } from '@/stores'
 
 const sickStore = useSickStore()
-// const mapName = ref('china')
 let options = reactive({})
 const chartRef = ref()
 
@@ -35,9 +34,11 @@ function getOptions(data: any) {
         series: [
             {
                 type: 'pie',
-                radius: ['40%', '70%'],
+                radius: ['10%', '60%'],
+                center: ['50%', '50%'],
+                roseType: 'area',
                 itemStyle: {
-                    borderRadius: 4,
+                    borderRadius: 5,
                     borderColor: '#fff',
                     borderWidth: 2
                 },

@@ -31,6 +31,9 @@ export const useSickStore = defineStore({
     },
     actions: {
         async getList() {
+            if (this.list.diseaseh5Shelf) {
+                return this.list
+            }
             const data = await getSickData() as SickDataMo
             this.list = data
         },

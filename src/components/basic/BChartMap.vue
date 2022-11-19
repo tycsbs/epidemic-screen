@@ -1,5 +1,5 @@
 <template>
-    <div class='w-full h-auto flex'>
+    <div class='w-full h-full flex'>
         <BaseChart id="china" :map-name="mapName"
         :options="options" ref="chartRef">
         </BaseChart>
