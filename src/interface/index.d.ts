@@ -265,3 +265,21 @@ export interface ProviceTableMo {
 	heal: number;
 	dead: number;
 }
+
+export interface TrendListItem {
+	char_id: number;
+	char_name: string;
+	photo: string;
+	icon: string;
+	fans_num: number;
+	vote_num: number;
+	position: number;
+	video_url: string;
+	video_img: string;
+	share_img: string;
+	description: string;
+	note: string;
+	info: string;
+	is_vote: number;
+	user_vote_num: number;
+}

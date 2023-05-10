@@ -33,7 +33,7 @@ const body = ref(document.body)
 let scence = reactive({}) as THREE.Scene
 let camera = reactive({}) as THREE.PerspectiveCamera
 let renderer = reactive({}) as THREE.WebGLRenderer
-let control = reactive({})
+let control = reactive({}) as OrbitControls
 let pointsList = reactive({}) as Points<BufferGeometry, PointsMaterial>
 const winOpt = reactive({
     width: window.innerWidth,
@@ -66,6 +66,10 @@ const initView = () => {
     // const cube = new THREE.Mesh(geometry, material)
 
     control = new OrbitControls(camera, renderer.domElement)
+    // control.maxZoom = 3
+    // control.minZoom = -2
+    control.maxDistance = 3
+    control.minDistance = -2
 
     // scence.add(cube)
 
@@ -93,7 +97,7 @@ const loadPoints = () => {
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verties), 3))
 
     pointsList = new THREE.Points(geometry, new THREE.PointsMaterial({
-        map: new THREE.TextureLoader().load('/public/snow.png'),
+        map: new THREE.TextureLoader().load('/snow.png'),
         opacity: 0.3,
         transparent: true,
         alphaTest: 0.05,
@@ -122,15 +126,15 @@ useResizeObserver(body, (entry) => {
             pointsList.position.z = 0
         }
         gsap.to(pointsList.position, {
-            y: 3,
+            y: 2,
             duration: 30,
             yoyo: true,
             repeat: -1,
             ease: 'power1'
         })
         gsap.to(pointsList.rotation, {
-            z: Math.PI / 3,
-            duration: 60,
+            z: Math.PI / 2,
+            duration: 80,
             yoyo: true,
             repeat: -1,
             ease: 'power1'

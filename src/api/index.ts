@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { RankListItem } from '@/interface'
 
 const server = axios.create({
-    // baseURL: 'http://42.192.144.141/'
+    // baseURL: 'https://42.192.144.141/'
 })
 
 export const getSickData = () => server.get('/api/getSickData')
@@ -20,3 +20,13 @@ export const getSickRankList = () => server.get('/api/getSickRankList')
     }
     return null
 })
+
+export const getMongoTrendList = () => server.get('/api/getTrendData2')
+.then(({ status, data }) => {
+    if (status === 200) {
+        return data.data
+    }
+    return null
+})
+
+// getMongoTrendList()

@@ -1,14 +1,13 @@
 import {defineStore} from 'pinia'
-import type { SickDataMo, RankListItem, ProviceTableMo } from '@/interface'
-import { getSickData, getSickRankList } from '@/api/'
+import type { SickDataMo, RankListItem, ProviceTableMo, TrendListItem } from '@/interface'
+import { getMongoTrendList, getSickData, getSickRankList } from '@/api/'
 
 export const useSickStore = defineStore({
     id: 'epidemic',
     state: () => ({
         list: <SickDataMo>{},
-        rankList: <RankListItem[]>[]
-
-        // proviceList: <ProviceTableMo[]>[]
+        rankList: <RankListItem[]>[],
+        trendList: <TrendListItem[]>[]
     }),
     getters: {
         /**
@@ -41,6 +40,11 @@ export const useSickStore = defineStore({
         async getSickRankList() {
             const data = await getSickRankList() as RankListItem[]
             this.rankList = data
+        },
+
+        async getMongoTrendList() {
+            const data = await getMongoTrendList() as TrendListItem[]
+            this.trendList = data
         }
     }
 })
