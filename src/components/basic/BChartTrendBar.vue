@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex h-full box-border p-2 flag">
+    <div class="w-full flex h-full box-border flag">
         <BaseChart id="pie" :options="options" ref="chartRef">
         </BaseChart>
         <!-- <dv-capsule-chart :config="dvConf" class="w-full"/> -->
@@ -84,8 +84,8 @@ function getOptions(xData: string[], data: number[]) {
             }
         },
         grid: {
-            left: 100,
-            right: 100,
+            left: '100px',
+            right: '80px',
             top: 10,
             bottom: 25
         },
@@ -143,10 +143,7 @@ function getOptions(xData: string[], data: number[]) {
 </script>
 <style lang='less' scoped>
 .flag {
-    padding-right: 30px;
-    /deep/ .dv-capsule-chart .label-column {
-    min-width: 85px
-}
+    margin-right: 15px;
 }
 
     
