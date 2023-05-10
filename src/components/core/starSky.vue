@@ -50,7 +50,7 @@ const initView = () => {
     scence = new THREE.Scene()
     scence.background = loadBackground()
     camera = new THREE.PerspectiveCamera(45, winOpt.width / winOpt.height, 0.1, 100)
-    camera.position.set(5, 5, 2)
+    camera.position.set(2, 5, 1)
 
     renderer = new THREE.WebGLRenderer({
         antialias: true
@@ -69,7 +69,7 @@ const initView = () => {
     // control.maxZoom = 3
     // control.minZoom = -2
     control.maxDistance = 3
-    control.minDistance = -2
+    control.minDistance = -5
 
     // scence.add(cube)
 
@@ -83,7 +83,7 @@ const initView = () => {
 const loadPoints = () => {
     const geometry = new THREE.BufferGeometry()
     const verties = []
-    for (let index = 0; index < 30000; index++) {
+    for (let index = 0; index < 60000; index++) {
         const points = THREE.MathUtils.randFloat(-4, 4)
         // geometry.tween.push(gsap.to({points}, {
         //     duration: 6,
@@ -97,7 +97,7 @@ const loadPoints = () => {
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verties), 3))
 
     pointsList = new THREE.Points(geometry, new THREE.PointsMaterial({
-        map: new THREE.TextureLoader().load('/snow.png'),
+        map: new THREE.TextureLoader().load('/snow.webp'),
         opacity: 0.3,
         transparent: true,
         alphaTest: 0.05,
@@ -150,7 +150,7 @@ const loadBackground = () => {
     const gradient = ctx?.createLinearGradient(0, 0, winOpt.width, 0)
     ctx.fillStyle = gradient
     gradient?.addColorStop(0, '#4e22b7')
-    gradient?.addColorStop(1, '#3292ff')
+    gradient?.addColorStop(1, '#5783ff')
 
     ctx?.fillRect(0, 0, winOpt.width, winOpt.height)
 
