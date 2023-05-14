@@ -1,8 +1,7 @@
 <template>
     <div class="w-full flex h-full box-border flag">
-        <BaseChart id="pie" :options="options" ref="chartRef">
-        </BaseChart>
-        <!-- <dv-capsule-chart :config="dvConf" class="w-full"/> -->
+        <BaseBarChart id="pie" :options="options" ref="chartRef">
+        </BaseBarChart>
         <div class="avatar-wrapper" ref="avatarRef">
             <div class="avatar-container"  id="avatarRef">
                 <div class="avatar" v-for="(item, index) in avatarMap" :key="index">
@@ -15,7 +14,9 @@
 <script setup lang='ts'>
 import { ref, reactive, onMounted } from 'vue'
 import { useSickStore } from '@/stores'
+import BaseBarChart from '@/components/core/baseChart.vue'
 import gsap from 'gsap'
+import type { EChartsOption } from 'echarts'
 
 const _color = ['#fb7293','#ff9f7f','#ffdb5c','#9fe6b8','#67e0e3',
     '#32c5e9','#37a2da','#32c5e9','#37a2da',
@@ -26,31 +27,48 @@ const _color = ['#fb7293','#ff9f7f','#ffdb5c','#9fe6b8','#67e0e3',
     '#32c5e9','#37a2da','#32c5e9','#37a2da',
     '#32c5e9','#37a2da','#32c5e9','#37a2da',
     ]
-let options = reactive({})
-const avatarMap = reactive({} as {[key: string]: string})
+const options = ref<EChartsOption>()
+const avatarMap = reactive<string[]>([])
 const chartRef = ref()
 const avatarRef = ref()
 const store = useSickStore()
-store.$subscribe((mutation, state) => {
-    const names = state.trendList?.map(v => v.char_name)
-    const datas = state.trendList?.map(v => v.vote_num)
-    options = getOptions(names, datas)
-    chartRef.value.initChart(options)
+
+store.$subscribe(() => {
+    initPageData()
 })
-onMounted(async () => {
-    // await store.getMongoTrendList()
+
+const showListOneByOne = (datas: number[], names: string[], showList: number[] = []) => {
+    if (datas.length === 0) return
+    const _data = [...datas]
+    const temp = showList.length === 0 ? new Array(datas.length).fill(0) : [...showList]
+    requestAnimationFrame(() => {
+        temp[_data.length - 1] = _data.pop()!
+        options.value = getOptions(names, temp)
+        showListOneByOne(_data, names, temp)
+    })
+}
+
+const initPageData = async (isFirst = false) => {
     const names = store.trendList?.map(v => v.char_name)
     const datas = store.trendList?.map(v => v.vote_num)
+    options.value = getOptions(names, datas)
+    isFirst && chartRef.value.initChart(options)
+}
+
+
+    
+onMounted(() => {
+    initPageData(true)
+    // 获取头像链接
     store.trendList?.forEach((item, index) => {
         if (index > 8) return
-        avatarMap[item.char_name] = item.photo
+        avatarMap.push(item.photo)
     })
-    options = getOptions(names, datas)
-    chartRef.value.initChart(options)
+    
+    // 定时更新数据
     run()
-    setTimeout(() => {
-        doAnim()
-    })
+    // 执行头像动画
+    doAnim()
 })
 
 function run() {
@@ -82,7 +100,7 @@ function doAnim() {
     })
 }
 
-function getOptions(xData: string[], data: number[]) {
+function getOptions(xData: string[], data: number[]): EChartsOption {
     return {
         xAxis: {
             max: 'dataMax',
@@ -91,9 +109,6 @@ function getOptions(xData: string[], data: number[]) {
             },
             axisLabel: {
                 show: false,
-                // fontSize: 10,
-                // color: '#fff',
-                // rotate: 20
             }
         },
         grid: {
@@ -146,8 +161,8 @@ function getOptions(xData: string[], data: number[]) {
         legend: {
             show: true
         },
-        animationDuration: 0,
-        animationDurationUpdate: 3000,
+        // animationDuration: 330,
+        // animationDurationUpdate: 3000,
         animationEasing: 'linear',
         animationEasingUpdate: 'linear'
     }
